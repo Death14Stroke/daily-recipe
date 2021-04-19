@@ -1,11 +1,18 @@
-import React, { FC, memo } from 'react';
-import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import React, { FC, memo, useContext } from 'react';
+import {
+	View,
+	StyleSheet,
+	ViewStyle,
+	StyleProp,
+	TouchableOpacity
+} from 'react-native';
 import { Card } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { GlobalStyles } from '../../styling';
 import TouchableShrink from '../container/TouchableShrink';
 import { Recipe } from '../../models/';
 import TextIcon from './TextIcon';
+import { RecipesContext } from '../../context';
 
 interface Props {
 	recipe: Recipe;
@@ -14,7 +21,12 @@ interface Props {
 }
 
 const RecipeCard: FC<Props> = ({ recipe, containerStyle, onPress }) => {
-	const { title, time, photo_url, category } = recipe;
+	const { title, time, photo_url, category, isBookmarked } = recipe;
+	const {
+		actions: { bookmarkRecipe }
+	} = useContext(RecipesContext);
+
+	//console.log(`${title} category: ${category}`);
 
 	return (
 		<View style={[containerStyle, { elevation: 3 }]}>
@@ -52,6 +64,19 @@ const RecipeCard: FC<Props> = ({ recipe, containerStyle, onPress }) => {
 							title={category.name}
 						/>
 					</View>
+					<TouchableOpacity
+						style={styles.bookmark}
+						onPress={() => bookmarkRecipe(recipe)}>
+						{isBookmarked ? (
+							<Ionicons name='heart' size={24} color='red' />
+						) : (
+							<Ionicons
+								name='heart-outline'
+								size={24}
+								color='red'
+							/>
+						)}
+					</TouchableOpacity>
 				</Card>
 			</TouchableShrink>
 		</View>
@@ -66,11 +91,19 @@ const styles = StyleSheet.create({
 	image: {
 		borderTopStartRadius: 10,
 		borderTopEndRadius: 10
+	},
+	bookmark: {
+		position: 'absolute',
+		bottom: 0,
+		right: 0,
+		marginRight: 10,
+		marginBottom: 10
 	}
 });
 
 export default memo(
 	RecipeCard,
 	(prevProps, nextProps) =>
-		prevProps.recipe.recipeId === nextProps.recipe.recipeId
+		prevProps.recipe.recipeId === nextProps.recipe.recipeId &&
+		prevProps.recipe.isBookmarked === nextProps.recipe.isBookmarked
 );

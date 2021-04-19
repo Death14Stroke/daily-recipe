@@ -76,6 +76,11 @@ const RecipesScreen: FC<Props> = ({ navigation }) => {
 		fetchTopIngredients();
 	}, []);
 
+	console.log(
+		'trending:',
+		recipes.map(r => `${r.title} ${r.isBookmarked} category: ${r.category}`)
+	);
+
 	return (
 		<SafeAreaView style={GlobalStyles.tabScreenContainer}>
 			<StatusBar translucent backgroundColor='transparent' />

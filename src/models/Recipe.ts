@@ -12,4 +12,5 @@ export interface Recipe {
 	time: string;
 	ingredients: Quantity[];
 	steps: string[];
+	isBookmarked: boolean;
 }
