@@ -76,11 +76,6 @@ const RecipesScreen: FC<Props> = ({ navigation }) => {
 		fetchTopIngredients();
 	}, []);
 
-	console.log(
-		'trending:',
-		recipes.map(r => `${r.title} ${r.isBookmarked} category: ${r.category}`)
-	);
-
 	return (
 		<SafeAreaView style={GlobalStyles.tabScreenContainer}>
 			<StatusBar translucent backgroundColor='transparent' />
@@ -93,6 +88,11 @@ const RecipesScreen: FC<Props> = ({ navigation }) => {
 					keyExtractor={({ recipeId }) => `rec_${recipeId}`}
 					renderItem={renderRecipe}
 					horizontal
+					getItemLayout={(_, index) => ({
+						length: CardDimens.recipe.width + 20,
+						offset: (CardDimens.recipe.width + 20) * index,
+						index
+					})}
 					contentContainerStyle={{ paddingHorizontal: 10 }}
 					showsHorizontalScrollIndicator={false}
 					style={styles.list}
@@ -124,7 +124,7 @@ const RecipesScreen: FC<Props> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
 	recipeContainer: {
-		...CardDimens.recipe,
+		width: CardDimens.recipe.width,
 		marginHorizontal: 10,
 		marginBottom: 5
 	},

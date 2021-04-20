@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Card } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
-import { GlobalStyles } from '../../styling';
+import { CardDimens, GlobalStyles } from '../../styling';
 import TouchableShrink from '../container/TouchableShrink';
 import { Recipe } from '../../models/';
 import TextIcon from './TextIcon';
@@ -25,8 +25,6 @@ const RecipeCard: FC<Props> = ({ recipe, containerStyle, onPress }) => {
 	const {
 		actions: { bookmarkRecipe }
 	} = useContext(RecipesContext);
-
-	//console.log(`${title} category: ${category}`);
 
 	return (
 		<View style={[containerStyle, { elevation: 3 }]}>
@@ -86,7 +84,7 @@ const RecipeCard: FC<Props> = ({ recipe, containerStyle, onPress }) => {
 const styles = StyleSheet.create({
 	container: {
 		elevation: 3,
-		height: 250
+		height: CardDimens.recipe.height
 	},
 	image: {
 		borderTopStartRadius: 10,

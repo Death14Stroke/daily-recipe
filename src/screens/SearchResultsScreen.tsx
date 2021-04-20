@@ -13,6 +13,7 @@ import food from '../api/food';
 import { Recipe } from '../models';
 import { ProgressOverlay, RecipeCard } from '../components/view';
 import { Header } from '../components/header';
+import { CardDimens } from '../styling';
 
 interface Props {
 	route: RouteProp<RootStackParamList, 'SearchResults'>;
@@ -67,6 +68,11 @@ const SearchResultsScreen: FC<Props> = ({ route, navigation }) => {
 						keyExtractor={(recipe: Recipe) =>
 							recipe.recipeId.toString()
 						}
+						getItemLayout={(_, index) => ({
+							length: CardDimens.recipe.height,
+							offset: CardDimens.recipe.height * index,
+							index
+						})}
 						renderItem={renderRecipe}
 						style={{ flexGrow: 0 }}
 						showsVerticalScrollIndicator={false}

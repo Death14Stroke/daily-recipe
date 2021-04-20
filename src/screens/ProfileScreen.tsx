@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useRef, useState } from 'react';
+import React, { FC, useContext, useRef, useState } from 'react';
 import {
 	Text,
 	StatusBar,
@@ -32,18 +32,10 @@ interface Props {
 const ProfileScreen: FC<Props> = ({ navigation }) => {
 	const { colors } = useTheme();
 	const {
-		state: { bookmarks },
-		actions: { fetchBookmarks }
+		state: { bookmarks }
 	} = useContext(RecipesContext);
 	const [user, setUser] = useState(useCurrentUser());
 	const toast = useRef<Toast>(null);
-
-	console.log(
-		'bookmarks:',
-		bookmarks.map(
-			r => `${r.title} ${r.isBookmarked} category: ${r.category}`
-		)
-	);
 
 	const signOutUser = async () => {
 		try {
@@ -81,10 +73,6 @@ const ProfileScreen: FC<Props> = ({ navigation }) => {
 		);
 	};
 
-	useEffect(() => {
-		fetchBookmarks();
-	}, []);
-
 	if (user === null || user === undefined) {
 		return <AppLoading />;
 	}
@@ -115,6 +103,11 @@ const ProfileScreen: FC<Props> = ({ navigation }) => {
 				keyExtractor={({ recipeId }) => `rec_${recipeId}`}
 				renderItem={renderRecipe}
 				horizontal
+				getItemLayout={(_, index) => ({
+					length: CardDimens.recipe.width,
+					offset: CardDimens.recipe.width * index,
+					index
+				})}
 				contentContainerStyle={{ paddingHorizontal: 5 }}
 				showsHorizontalScrollIndicator={false}
 				style={styles.list}
@@ -153,7 +146,7 @@ const styles = StyleSheet.create({
 		marginLeft: 15
 	},
 	recipeContainer: {
-		...CardDimens.recipe,
+		width: CardDimens.recipe.width,
 		marginHorizontal: 10,
 		marginBottom: 5
 	},
